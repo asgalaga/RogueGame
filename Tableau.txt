@@ -1,0 +1,26 @@
+
+xxxxxxxxxxxxxxxxx
+xoHooooooxooooooxxxx
+xxxxxxxxoxxxxxooooox
+x   xoxxox   xoxxxxx                            
+xxxxxoxxoxxxxxoxxxxx                             
+xoooooooooooooooooox                  xxxxxx    xxxxxxxxxxxx
+xoooxxxxxxxxxxxxxxxx                  xxxxoD----Doooooooooox
+xoxxxooooooooox                       xoxxox    xoxxxxxooxox
+xoooooxxxoxxxxx                   xxxxxoxxox    xox   xooxox 
+xxxxxxxxxDx                      xxoooooooox    xoxxxxxooxxxx
+         |                       xooxxxoxoox    xooooooooooooFIN
+         |                       xooxxxxxooxxxx xxxxxxxxxxxxx
+        xDxxxxxxxxx              xooooooxooooox
+        xoooooooxxx              xxxxxxDxxxxxxx
+     xxxxoxxxxxxxxx                    |
+    xxooooxxxxxxxxx                    |
+    xxooooooooooox   xxxxxxxxxxxxxxxxxxDxxx
+     xoxxxxxoxxxxx   xooooooooox  xxxxxooox
+     xox   xox       xxxxxxxoxxx  xoooxxxox
+     xox   xox             xoxxx  xoxoxxxox
+     xox   xox     xxxxxxxxxooox  xoxoxooox
+     xxxxxxxoD-----Doooooooooxox  xoxoxoxxx
+           xxx     xoxxxxxxxoxoxxxxoxoooox
+                   xoooooooooxoooooooxxxxx
+                   xxxxxxxxxxxxxxxxxxx

@@ -1,0 +1,150 @@
+package org.example.testjavafx;
+
+import java.net.URL;
+import java.io.IOException;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+public class GameGridThreeController {
+
+    @FXML
+    private GridPane gameGrid; // Lien avec GridPane du FXML
+
+    @FXML
+    private Pane playerPane; // Pane pour le personnage
+
+    @FXML
+    private ImageView playerImage; // ImageView du personnage
+
+    private final int TILE_SIZE = 58; // Taille d’une case
+    private final int GRID_SIZE = 14; // Nombre de cases (14x14)
+
+    private final int[][] mazeThree = {
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+            { 1, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1 },
+            { 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 },
+            { 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1 },
+            { 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1 },
+            { 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1 },
+            { 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
+            { 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1 },
+            { 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1 }
+    };
+
+    private int playerCol = 11; // Colonne initiale du joueur
+    private int playerRow = 12; // Ligne initiale du joueur
+
+    @FXML
+    public void initialize() {
+        System.out.println("GameGridTwoController chargé !");
+
+        // Génération de la grille avec les images associées
+        for (int row = 0; row < GRID_SIZE; row++) {
+            for (int col = 0; col < GRID_SIZE; col++) {
+                String imagePath;
+                switch (mazeThree[row][col]) {
+                    case 1 -> imagePath = "/images/wall.png"; // Mur
+                    case 2 -> imagePath = "/images/door.png"; // Porte
+                    default -> imagePath = "/images/floor.png"; // Sol
+                }
+
+                URL imgURL = getClass().getResource(imagePath);
+                if (imgURL == null) {
+                    System.err.println("❌ Image introuvable : " + imagePath);
+                    continue;
+                }
+
+                ImageView imageView = new ImageView(new Image(imgURL.toExternalForm()));
+                imageView.setFitWidth(TILE_SIZE);
+                imageView.setFitHeight(TILE_SIZE);
+                gameGrid.add(imageView, col, row);
+            }
+        }
+
+        // Définir la position initiale du joueur
+        playerImage.setLayoutX(playerCol * TILE_SIZE);
+        playerImage.setLayoutY(playerRow * TILE_SIZE);
+
+        System.out.println("✅ Position initiale : Col=" + playerCol + ", Row=" + playerRow);
+        System.out.println("✅ Position en pixels : X=" + (playerCol * TILE_SIZE) + ", Y=" + (playerRow * TILE_SIZE));
+
+        // Activation du clavier une fois la scène chargée
+        playerPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                newScene.setOnKeyPressed(event -> {
+                    switch (event.getCode()) {
+                        case UP, W -> movePlayer(0, -1);
+                        case DOWN, S -> movePlayer(0, 1);
+                        case LEFT, A -> movePlayer(-1, 0);
+                        case RIGHT, D -> movePlayer(1, 0);
+                    }
+                });
+            }
+        });
+    }
+
+    private void movePlayer(int deltaX, int deltaY) {
+        int newCol = playerCol + deltaX;
+        int newRow = playerRow + deltaY;
+
+        // Vérifier les limites et empêcher de traverser les murs
+        if (newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE) {
+            if (mazeThree[newRow][newCol] != 1) { // Vérifie si ce n'est pas un mur
+                playerCol = newCol;
+                playerRow = newRow;
+                playerImage.setLayoutX(playerCol * TILE_SIZE);
+                playerImage.setLayoutY(playerRow * TILE_SIZE);
+
+                // Vérifie si le joueur atteint une porte (2)
+                if (mazeThree[newRow][newCol] == 2) {
+                    System.out.println("🚪 Porte atteinte !");
+
+                    // Vérifie si c'est la porte de retour ou d'avancement
+                    if (newRow == 13 && newCol == 11) { // Coordonnées de la porte vers GameGridOne
+                        System.out.println("🔄 Retour au niveau précédent...");
+                        loadPreviousLevel();
+                    } else {
+                        System.out.println("➡️ Passage au niveau suivant...");
+                    }
+                }
+            } else {
+                System.out.println("⛔ Mur détecté ! Déplacement interdit.");
+            }
+        }
+    }
+
+    private void loadPreviousLevel() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGridTwo.fxml"));
+            Pane previousRoot = loader.load();
+
+            // Récupérer le contrôleur du niveau 2
+            GameGridTwoController controller = loader.getController();
+
+            // Mettre le joueur à la bonne position sur GameGridTwo (ex: la porte de retour)
+            controller.setPlayerPosition(1, 10); // ⚠️ Ajuste ces valeurs selon la bonne position
+
+            Stage stage = (Stage) playerPane.getScene().getWindow();
+            Scene previousScene = new Scene(previousRoot);
+            stage.setScene(previousScene);
+            stage.show();
+
+            System.out.println("✅ Retour au niveau 2 réussi avec nouvelle position !");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Erreur lors du chargement de GameGridTwo.fxml !");
+        }
+    }
+
+}
