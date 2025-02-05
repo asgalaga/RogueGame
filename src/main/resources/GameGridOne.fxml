@@ -1121,82 +1121,82 @@
                               <Image url="@images/caseNoir.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="monstre1" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="monstre2" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="monstre3" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="monstre4" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="monstre5" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="monstre6" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="keyOnGround" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="fullMyHeart1" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="fullMyHeart2" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="oneMoreLife" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="armure1" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="armure2" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="arme1" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="arme2" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="tempo1" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="tempo2" fitHeight="58.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/rien.png" />
                            </image>
@@ -1267,42 +1267,42 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                        <ImageView fx:id="heart2" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                            <image>
                               <Image url="@images/life.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="heart1" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@images/life.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                        <ImageView fx:id="heart3" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                            <image>
                               <Image url="@images/life.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                        <ImageView fx:id="heart4" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                            <image>
                               <Image url="@images/life.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
+                        <ImageView fx:id="heart5" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
                            <image>
                               <Image url="@images/life.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
+                        <ImageView fx:id="heart6" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5">
                            <image>
                               <Image url="@images/life.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6">
+                        <ImageView fx:id="heart7" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="6">
                            <image>
                               <Image url="@images/life.png" />
                            </image>
                         </ImageView>
-                        <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7">
+                        <ImageView fx:id="heart8" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="7">
                            <image>
                               <Image url="@images/noLife.png" />
                            </image>
