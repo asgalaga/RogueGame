@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+@SuppressWarnings("exports")
 public class Main extends Application {
 
     @Override
@@ -21,11 +22,6 @@ public class Main extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 890, 950);
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
-                Platform.exit();
-            }
-        });
         primaryStage.setScene(scene);
         primaryStage.show();
     }

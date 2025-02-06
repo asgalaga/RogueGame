@@ -1,5 +1,6 @@
 package org.example.testjavafx;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -50,25 +51,26 @@ public class GameGridOneController {
             { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2 },
             { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-
     };
 
     @FXML
     public void initialize() {
 
         Game game = new Game();
-        // System.out.println("GameGridOneController chargé !");
-
-        // List<Point2D> freeTiles = new ArrayList<>();
 
         Game.maze = mazeOne;
+
+        Player.x = 1;
+        Player.y = 2;
+        // System.out.println("GameGridOneController chargé !");
+
         // Génération de la grille avec les images associées
         for (int row = 0; row < GRID_SIZE; row++) {
             for (int col = 0; col < GRID_SIZE; col++) {
                 String imagePath = "";
 
                 switch (mazeOne[row][col]) {
-                    case 0 -> Game.passages.add(new Point2D(col, row));
+                    case 0 -> Game.passages.add(new Point2D(row, col));
                     case 1 -> imagePath = "/images/wall.png"; // Mur
                     case 2 -> imagePath = "/images/door.png"; // Porte
                     default -> imagePath = "/images/floor.png"; // Sol
@@ -98,6 +100,7 @@ public class GameGridOneController {
                         case DOWN, S -> movePlayer(0, 1);
                         case LEFT, A -> movePlayer(-1, 0);
                         case RIGHT, D -> movePlayer(1, 0);
+                        case ESCAPE -> Platform.exit();
                         default -> System.out.println("Unexpected value: " + event.getCode());
                     }
                 });
@@ -135,6 +138,25 @@ public class GameGridOneController {
                 if (mazeOne[newRow][newCol] == 2) {
                     System.out.println("🚪 Porte atteinte ! Passage au niveau suivant...");
                     loadNextLevel();
+                }
+                switch (mazeOne[newRow][newCol]) {
+                    case 3:
+                        Player.key = true;
+                        System.out.println("Clef !");
+                        break;
+                    case 4:
+                        Player.life -= 1;
+                        System.out.println("Monstre !");
+                        if (Player.life < 1)
+                            Player.dead = true;
+                        break;
+                    case 5:
+                        System.out.println("Potion !");
+                        if (Player.life < 9)
+                            Player.life += 1;
+                        break;
+                    default:
+                        break;
                 }
             } else {
                 System.out.println("⛔ Mur détecté !");
