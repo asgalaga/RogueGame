@@ -12,9 +12,9 @@ Nombre d'xp nécessaire pour passer de niveau  = experienceNeed
 
 Chiffre de notre niveau                       = levelLabel
 
-Image avec rien dessus pour l'instant                = monstre1, monstre2, monstre3, monstre4, monstre5, monstre6
-         (Clé pour ouvrir une porte)                 = keyOnGround
-        (Coeur pour remplir notre vie)               = fullMyHeart1, fullMyHeart2
+Image avec rien dessus pour l'instant         = monstre1, monstre2, monstre3, monstre4, monstre5, monstre6
+(Clé pour ouvrir une porte)                   = keyOnGround
+(Coeur pour remplir notre vie)                = fullMyHeart1, fullMyHeart2
 pour avoir un coeur de plus dans notre barre de vie  = oneMoreLife 
 Armure et arme                                       = armure1, armure2, arme1, arme2
 
