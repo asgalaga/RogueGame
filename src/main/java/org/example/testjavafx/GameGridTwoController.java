@@ -143,7 +143,7 @@ public class GameGridTwoController {
             GameGridOneController controller = loader.getController();
 
             // Définir la position du joueur à la porte
-            controller.setPlayerPosition(12, 11); // Remplace ces valeurs par la position correcte
+            setPlayerPosition(12, 11); // Remplace ces valeurs par la position correcte
 
             Stage stage = (Stage) playerPane.getScene().getWindow();
             Scene previousScene = new Scene(previousRoot);

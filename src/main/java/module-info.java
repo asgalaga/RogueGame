@@ -5,5 +5,6 @@ module org.example.testjavafx {
     requires org.kordamp.bootstrapfx.core;
 
     opens org.example.testjavafx to javafx.fxml;
+
     exports org.example.testjavafx;
 }

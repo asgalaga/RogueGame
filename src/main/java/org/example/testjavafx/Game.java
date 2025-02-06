@@ -1,25 +1,66 @@
 package org.example.testjavafx;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 @SuppressWarnings("exports")
 public class Game {
     public static GridPane grid;
     public static int[][] maze;
+    public static int size = 14; // Nombre de cases (14x14)
     public static List<Point2D> passages = new ArrayList<>();
     public static int tileSize = 58; // Taille d’une case
-    public static Player player;
+    public static int score = 0; // Taille d’une case
+    public static GameGridOneController level1;
 
-    public void fill(GridPane gameGrid) {
+    public static void start() {
+        // FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainPage.fxml"));
+        // Parent root = loader.load();
+        //
+        // Scene scene = new Scene(root, 890, 950);
+        // primaryStage.setScene(scene);
+        // primaryStage.show();
+    }
+
+    public void fill(int gridSize, GridPane gameGrid) {
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                String imagePath = "";
+
+                switch (maze[row][col]) {
+                    case 0 -> Game.passages.add(new Point2D(row, col));
+                    case 1 -> imagePath = "/images/wall.png"; // Mur
+                    case 2 -> imagePath = "/images/door.png"; // Porte
+                    default -> imagePath = "/images/floor.png"; // Sol
+                }
+
+                URL imgURL = getClass().getResource(imagePath);
+                if (imgURL == null) {
+                    // System.err.println("❌ Image introuvable : " + imagePath);
+                    continue;
+                }
+
+                ImageView imageView = new ImageView(new Image(imgURL.toExternalForm()));
+                imageView.setFitWidth(tileSize);
+                imageView.setFitHeight(tileSize);
+                gameGrid.add(imageView, col, row);
+            }
+        }
+
         grid = gameGrid;
+        size = gridSize;
 
         Collections.shuffle(passages);
 
@@ -35,8 +76,6 @@ public class Game {
         for (int i = 0; i < 2; i++) {
             put(5, "/images/life.png");
         }
-
-        // System.out.println(maze);
     }
 
     public void put(int kind, String image) {
@@ -56,5 +95,22 @@ public class Game {
         grid.add(imageView, y, x);
 
         maze[(int) tile.getX()][(int) tile.getY()] = kind;
+    }
+
+    public void next(Pane playerPane) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGridTwo.fxml"));
+            Pane nextRoot = loader.load();
+
+            Stage stage = (Stage) playerPane.getScene().getWindow();
+            Scene nextScene = new Scene(nextRoot);
+            stage.setScene(nextScene);
+            stage.show();
+
+            System.out.println("✅ Chargement du niveau 2 réussi !");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Erreur lors du chargement de GameGridTwo.fxml !");
+        }
     }
 }

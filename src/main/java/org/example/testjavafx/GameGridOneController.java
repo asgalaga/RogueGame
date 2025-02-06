@@ -28,13 +28,13 @@ public class GameGridOneController {
     @FXML
     private ImageView playerImage; // ImageView du personnage
 
-    @FXML
-    private ImageView monstre1; // ImageView du personnage
+    // @FXML
+    // private ImageView monstre1; // ImageView du personnage
 
-    private int playerX = 58; // Position initiale en pixels
-    private int playerY = 58;
-    private final int TILE_SIZE = 58; // Taille d’une case
-    private final int GRID_SIZE = 14; // Nombre de cases (14x14)
+    public int playerX = 58; // Position initiale en pixels
+    public int playerY = 58;
+    public final int TILE_SIZE = 58; // Taille d’une case
+    public final int GRID_SIZE = 14; // Nombre de cases (14x14)
 
     private final int[][] mazeOne = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -52,132 +52,58 @@ public class GameGridOneController {
             { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
     };
+    public static Game game;
 
     @FXML
     public void initialize() {
-
-        Game game = new Game();
+        game = new Game();
 
         Game.maze = mazeOne;
+        Game.level1 = this;
 
+        Player.game = game;
         Player.x = 1;
-        Player.y = 2;
-        // System.out.println("GameGridOneController chargé !");
+        Player.y = 1;
 
-        // Génération de la grille avec les images associées
-        for (int row = 0; row < GRID_SIZE; row++) {
-            for (int col = 0; col < GRID_SIZE; col++) {
-                String imagePath = "";
+        game.fill(GRID_SIZE, gameGrid);
 
-                switch (mazeOne[row][col]) {
-                    case 0 -> Game.passages.add(new Point2D(row, col));
-                    case 1 -> imagePath = "/images/wall.png"; // Mur
-                    case 2 -> imagePath = "/images/door.png"; // Porte
-                    default -> imagePath = "/images/floor.png"; // Sol
-                }
-
-                URL imgURL = getClass().getResource(imagePath);
-                if (imgURL == null) {
-                    // System.err.println("❌ Image introuvable : " + imagePath);
-                    continue;
-                }
-
-                ImageView imageView = new ImageView(new Image(imgURL.toExternalForm()));
-                imageView.setFitWidth(TILE_SIZE);
-                imageView.setFitHeight(TILE_SIZE);
-                gameGrid.add(imageView, col, row);
-            }
-        }
-
-        game.fill(gameGrid);
-
-        // Activation du clavier une fois la scène chargée
-        playerPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            if (newScene != null) {
-                newScene.setOnKeyPressed(event -> {
-                    switch (event.getCode()) {
-                        case UP, W -> movePlayer(0, -1);
-                        case DOWN, S -> movePlayer(0, 1);
-                        case LEFT, A -> movePlayer(-1, 0);
-                        case RIGHT, D -> movePlayer(1, 0);
-                        case ESCAPE -> Platform.exit();
-                        default -> System.out.println("Unexpected value: " + event.getCode());
-                    }
-                });
-            }
-        });
+        Player.listen(playerPane);
     }
 
-    public void setPlayerPosition(int col, int row) {
-        this.playerX = col * TILE_SIZE;
-        this.playerY = row * TILE_SIZE;
-
-        // Mettre à jour l'affichage du personnage
-        playerImage.setLayoutX(playerX);
-        playerImage.setLayoutY(playerY);
-
-        System.out.println("📍 Position du joueur définie à : " + col + ", " + row);
+    public GridPane getGameGrid() {
+        return gameGrid;
     }
 
-    private void movePlayer(int deltaX, int deltaY) {
-        int currentCol = playerX / TILE_SIZE;
-        int currentRow = playerY / TILE_SIZE;
-        int newCol = currentCol + deltaX;
-        int newRow = currentRow + deltaY;
-
-        // Vérifier les limites et éviter les murs
-        if (newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE) {
-            if (mazeOne[newRow][newCol] != 1) { // Vérifie si ce n'est pas un mur
-                playerX = newCol * TILE_SIZE;
-                playerY = newRow * TILE_SIZE;
-                playerImage.setLayoutX(playerX);
-                playerImage.setLayoutY(playerY);
-
-                System.out.println("✅ Déplacement : " + newCol + ", " + newRow);
-
-                if (mazeOne[newRow][newCol] == 2) {
-                    System.out.println("🚪 Porte atteinte ! Passage au niveau suivant...");
-                    loadNextLevel();
-                }
-                switch (mazeOne[newRow][newCol]) {
-                    case 3:
-                        Player.key = true;
-                        System.out.println("Clef !");
-                        break;
-                    case 4:
-                        Player.life -= 1;
-                        System.out.println("Monstre !");
-                        if (Player.life < 1)
-                            Player.dead = true;
-                        break;
-                    case 5:
-                        System.out.println("Potion !");
-                        if (Player.life < 9)
-                            Player.life += 1;
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                System.out.println("⛔ Mur détecté !");
-            }
-        }
+    public Pane getPlayerPane() {
+        return playerPane;
     }
 
-    private void loadNextLevel() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGridTwo.fxml"));
-            Pane nextRoot = loader.load();
-
-            Stage stage = (Stage) playerPane.getScene().getWindow();
-            Scene nextScene = new Scene(nextRoot);
-            stage.setScene(nextScene);
-            stage.show();
-
-            System.out.println("✅ Chargement du niveau 2 réussi !");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("❌ Erreur lors du chargement de GameGridTwo.fxml !");
-        }
+    public ImageView getPlayerImage() {
+        return playerImage;
     }
+
+    public int getPlayerX() {
+        return playerX;
+    }
+
+    public int getPlayerY() {
+        return playerY;
+    }
+
+    public int getTILE_SIZE() {
+        return TILE_SIZE;
+    }
+
+    public int getGRID_SIZE() {
+        return GRID_SIZE;
+    }
+
+    public int[][] getMazeOne() {
+        return mazeOne;
+    }
+
+    public static Game getGame() {
+        return game;
+    }
+
 }
