@@ -32,13 +32,13 @@ public class Player {
                     win();
                     break;
                 case 3:
-                    unlock();
+                    unlock(x, y);
                     break;
                 case 4:
-                    fight();
+                    fight(x, y);
                     break;
                 case 5:
-                    heal();
+                    heal(x, y);
                     break;
                 default:
                     break;
@@ -46,28 +46,33 @@ public class Player {
         }
     }
 
-    public static void unlock() {
+    public static void unlock(int x, int y) {
         key = true;
         System.out.println("Clef !");
+        game.remove(x, y);
     }
 
-    public static void fight() {
+    public static void fight(int x, int y) {
         life -= 1;
         System.out.println("Monstre !");
         System.out.println("Ayoye ! HP = " + life);
+
         if (life < 1) {
             dead = true;
             System.out.println("Mort !");
         }
+
+        game.remove(x, y);
     }
 
-    public static void heal() {
+    public static void heal(int x, int y) {
         if (Player.life < 9) {
             Player.life += 1;
             System.out.println("Potion ! HP = " + Player.life);
         } else {
             System.out.println("Pas soif! HP = " + Player.life);
         }
+        game.remove(x, y);
     }
 
     public static void win() {
@@ -101,7 +106,7 @@ public class Player {
                 game.next(Game.level1.getPlayerPane());
             }
         } else {
-            System.out.println("⛔ Mur détecté !");
+            System.out.println("⛔ Reste dans le tableau !");
         }
     }
 
@@ -110,7 +115,6 @@ public class Player {
         playerPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 newScene.setOnKeyPressed(event -> {
-                    // GameGridOneController controller = new GameGridOneController();
                     switch (event.getCode()) {
                         case UP, W -> move(0, -1);
                         case DOWN, S -> move(0, 1);

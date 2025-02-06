@@ -17,7 +17,6 @@ import javafx.stage.Stage;
 
 @SuppressWarnings("exports")
 public class Game {
-    public static GridPane grid;
     public static int[][] maze;
     public static int size = 14; // Nombre de cases (14x14)
     public static List<Point2D> passages = new ArrayList<>();
@@ -59,7 +58,7 @@ public class Game {
             }
         }
 
-        grid = gameGrid;
+        // grid = gameGrid;
         size = gridSize;
 
         Collections.shuffle(passages);
@@ -68,7 +67,7 @@ public class Game {
         put(3, "/images/key.png");
 
         // monstres
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             put(4, "/images/monstre1.png");
         }
 
@@ -92,9 +91,33 @@ public class Game {
         int x = (int) tile.getX();
         int y = (int) tile.getY();
 
-        grid.add(imageView, y, x);
+        level1.getGameGrid().add(imageView, y, x);
 
         maze[(int) tile.getX()][(int) tile.getY()] = kind;
+    }
+
+    public void remove(int x, int y) {
+        GridPane grid = level1.getGameGrid();
+        List<javafx.scene.Node> nodesToRemove = new ArrayList<>();
+
+        for (javafx.scene.Node node : grid.getChildren()) {
+            Integer columnIndex = GridPane.getColumnIndex(node);
+            Integer rowIndex = GridPane.getRowIndex(node);
+
+            columnIndex = (columnIndex == null) ? 0 : columnIndex;
+            rowIndex = (rowIndex == null) ? 0 : rowIndex;
+
+            if (columnIndex == y && rowIndex == x) {
+                nodesToRemove.add(node);
+            }
+        }
+
+        if (nodesToRemove.size() > 1) {
+            grid.getChildren().remove(nodesToRemove.get(nodesToRemove.size() - 1));
+            maze[x][y] = 0; // Reset maze position to empty
+            passages.add(new Point2D(x, y));
+            level1.getGameGrid().requestLayout();
+        }
     }
 
     public void next(Pane playerPane) {

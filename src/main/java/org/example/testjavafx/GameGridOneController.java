@@ -61,11 +61,11 @@ public class GameGridOneController {
         Game.maze = mazeOne;
         Game.level1 = this;
 
+        game.fill(GRID_SIZE, gameGrid);
+
         Player.game = game;
         Player.x = 1;
         Player.y = 1;
-
-        game.fill(GRID_SIZE, gameGrid);
 
         Player.listen(playerPane);
     }
@@ -81,29 +81,4 @@ public class GameGridOneController {
     public ImageView getPlayerImage() {
         return playerImage;
     }
-
-    public int getPlayerX() {
-        return playerX;
-    }
-
-    public int getPlayerY() {
-        return playerY;
-    }
-
-    public int getTILE_SIZE() {
-        return TILE_SIZE;
-    }
-
-    public int getGRID_SIZE() {
-        return GRID_SIZE;
-    }
-
-    public int[][] getMazeOne() {
-        return mazeOne;
-    }
-
-    public static Game getGame() {
-        return game;
-    }
-
 }
