@@ -7,7 +7,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 @SuppressWarnings("exports")
-public class GameGridTwoController extends Level {
+public class Level {
+
     @FXML
     private GridPane gameGrid; // Lien avec GridPane du FXML
 
@@ -36,44 +37,12 @@ public class GameGridTwoController extends Level {
     @FXML
     private Label keysLabel; // Lien avec GridPane du FXML
 
-    private final int GRID_SIZE = 14; // Nombre de cases (12x12)
+    public int playerX = 58; // Position initiale en pixels
+    public int playerY = 58;
+    public final int TILE_SIZE = 58; // Taille d’une case
+    public final int GRID_SIZE = 14; // Nombre de cases (14x14)
 
-    private final int[][] mazeTwo = {
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 },
-            { 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
-            { 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
-            { 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1 },
-            { 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
-            { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1 },
-            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
-            { 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
-            { 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1 },
-            { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
-            { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-    };
-    public static Game game;
-
-    @FXML
-    public void initialize() {
-        next = "/GameGridThree.fxml";
-        game = new Game();
-
-        Game.maze = mazeTwo;
-        Game.level = this;
-
-        game.fill(GRID_SIZE, gameGrid);
-
-        Player.game = game;
-        Player.x = 1;
-        Player.y = 10;
-        Player.place(1, 10);
-
-        game.showHearts();
-        Player.listen(playerPane);
-    }
+    public String next = "";
 
     public GridPane getGameGrid() {
         return gameGrid;

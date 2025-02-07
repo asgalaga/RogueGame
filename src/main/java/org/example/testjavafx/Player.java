@@ -1,9 +1,6 @@
 package org.example.testjavafx;
 
 import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.geometry.Point2D;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 @SuppressWarnings("exports")
@@ -12,7 +9,7 @@ public class Player {
     public static Game game;
 
     public static int x, y;
-    public static int life = 6;
+    public static int life = 3;
     public static boolean key = false;
     public static boolean dead = false;
     public static boolean win = false;
@@ -50,6 +47,7 @@ public class Player {
         key = true;
         System.out.println("Clef !");
         game.remove(x, y);
+        game.showKeys();
     }
 
     public static void fight(int x, int y) {
@@ -63,6 +61,7 @@ public class Player {
         }
 
         game.remove(x, y);
+        game.showHearts();
     }
 
     public static void heal(int x, int y) {
@@ -73,6 +72,7 @@ public class Player {
             System.out.println("Pas soif! HP = " + Player.life);
         }
         game.remove(x, y);
+        game.showHearts();
     }
 
     public static void win() {
@@ -80,34 +80,43 @@ public class Player {
             win = true;
             key = false;
             System.out.println("🚪 Porte atteinte ! Passage au niveau suivant...");
+            game.showKeys();
         } else {
             System.out.println("Vérouillé!");
         }
     }
 
     public static void move(int x, int y) {
-        int currentCol = Game.level1.playerX / Game.tileSize;
-        int currentRow = Game.level1.playerY / Game.tileSize;
+        int currentCol = Game.level.playerX / Game.tileSize;
+        int currentRow = Game.level.playerY / Game.tileSize;
         int newCol = currentCol + x;
         int newRow = currentRow + y;
 
-        // Vérifier les limites et éviter les murs
         if (newRow >= 0 && newRow < Game.size && newCol >= 0 && newCol < Game.size) {
-            if (Game.maze[newRow][newCol] != 1) { // Vérifie si ce n'est pas un mur
-                Game.level1.playerX = newCol * Game.tileSize;
-                Game.level1.playerY = newRow * Game.tileSize;
-                Game.level1.getPlayerImage().setLayoutX(Game.level1.playerX);
-                Game.level1.getPlayerImage().setLayoutY(Game.level1.playerY);
+            if (Game.maze[newRow][newCol] != 1) {
+                Game.level.playerX = newCol * Game.tileSize;
+                Game.level.playerY = newRow * Game.tileSize;
+                Game.level.getPlayerImage().setLayoutX(Game.level.playerX);
+                Game.level.getPlayerImage().setLayoutY(Game.level.playerY);
             }
 
             Player.play(newRow, newCol);
 
             if (Player.win) {
-                game.next(Game.level1.getPlayerPane());
+                game.next(Game.level.getPlayerPane());
             }
         } else {
             System.out.println("⛔ Reste dans le tableau !");
         }
+    }
+
+    public static void place(int x, int y) {
+
+        Game.level.playerX = x * Game.tileSize;
+        Game.level.playerY = y * Game.tileSize;
+        Game.level.getPlayerImage().setLayoutX(Game.level.playerX);
+        Game.level.getPlayerImage().setLayoutY(Game.level.playerY);
+
     }
 
     public static void listen(Pane playerPane) {

@@ -22,9 +22,13 @@ public class Game {
     public static List<Point2D> passages = new ArrayList<>();
     public static int tileSize = 58; // Taille d’une case
     public static int score = 0; // Taille d’une case
-    public static GameGridOneController level1;
+    public static Level level;
 
-    public static void start() {
+    public Game() {
+
+    }
+
+    public void start() {
         // FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainPage.fxml"));
         // Parent root = loader.load();
         //
@@ -34,6 +38,8 @@ public class Game {
     }
 
     public void fill(int gridSize, GridPane gameGrid) {
+        size = gridSize;
+
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 String imagePath = "";
@@ -57,9 +63,6 @@ public class Game {
                 gameGrid.add(imageView, col, row);
             }
         }
-
-        // grid = gameGrid;
-        size = gridSize;
 
         Collections.shuffle(passages);
 
@@ -91,13 +94,13 @@ public class Game {
         int x = (int) tile.getX();
         int y = (int) tile.getY();
 
-        level1.getGameGrid().add(imageView, y, x);
+        level.getGameGrid().add(imageView, y, x);
 
         maze[(int) tile.getX()][(int) tile.getY()] = kind;
     }
 
     public void remove(int x, int y) {
-        GridPane grid = level1.getGameGrid();
+        GridPane grid = level.getGameGrid();
         List<javafx.scene.Node> nodesToRemove = new ArrayList<>();
 
         for (javafx.scene.Node node : grid.getChildren()) {
@@ -116,13 +119,13 @@ public class Game {
             grid.getChildren().remove(nodesToRemove.get(nodesToRemove.size() - 1));
             maze[x][y] = 0; // Reset maze position to empty
             passages.add(new Point2D(x, y));
-            level1.getGameGrid().requestLayout();
+            level.getGameGrid().requestLayout();
         }
     }
 
     public void next(Pane playerPane) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGridTwo.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(level.next));
             Pane nextRoot = loader.load();
 
             Stage stage = (Stage) playerPane.getScene().getWindow();
@@ -135,5 +138,28 @@ public class Game {
             e.printStackTrace();
             System.err.println("❌ Erreur lors du chargement de GameGridTwo.fxml !");
         }
+    }
+
+    public void showHearts() {
+        for (int i = 1; i < 8; i++) {
+            if (i <= Player.life) {
+                level.getHeart(i)
+                        .setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("/images/life.png")));
+
+            } else {
+                level.getHeart(i)
+                        .setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("/images/noLife.png")));
+
+            }
+        }
+    }
+
+    public void showKeys() {
+        if (Player.key)
+            level.getKeys().setText("1");
+        else
+            level.getKeys().setText("0");
+        // .setImage(new
+        // javafx.scene.image.Image(getClass().getResourceAsStream("/images/life.png")));
     }
 }

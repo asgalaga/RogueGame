@@ -1,24 +1,13 @@
 package org.example.testjavafx;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Point2D;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public class GameGridOneController {
-
+@SuppressWarnings("exports")
+public class GameGridOneController extends Level {
     @FXML
     private GridPane gameGrid; // Lien avec GridPane du FXML
 
@@ -28,8 +17,24 @@ public class GameGridOneController {
     @FXML
     private ImageView playerImage; // ImageView du personnage
 
-    // @FXML
-    // private ImageView monstre1; // ImageView du personnage
+    @FXML
+    private ImageView heart1; // Lien avec GridPane du FXML
+    @FXML
+    private ImageView heart2; // Lien avec GridPane du FXML
+    @FXML
+    private ImageView heart3; // Lien avec GridPane du FXML
+    @FXML
+    private ImageView heart4; // Lien avec GridPane du FXML
+    @FXML
+    private ImageView heart5; // Lien avec GridPane du FXML
+    @FXML
+    private ImageView heart6; // Lien avec GridPane du FXML
+    @FXML
+    private ImageView heart7; // Lien avec GridPane du FXML
+    @FXML
+    private ImageView heart8; // Lien avec GridPane du FXML
+    @FXML
+    private Label keysLabel; // Lien avec GridPane du FXML
 
     public int playerX = 58; // Position initiale en pixels
     public int playerY = 58;
@@ -56,10 +61,12 @@ public class GameGridOneController {
 
     @FXML
     public void initialize() {
+        next = "/GameGridTwo.fxml";
+
         game = new Game();
 
         Game.maze = mazeOne;
-        Game.level1 = this;
+        Game.level = this;
 
         game.fill(GRID_SIZE, gameGrid);
 
@@ -67,6 +74,7 @@ public class GameGridOneController {
         Player.x = 1;
         Player.y = 1;
 
+        game.showHearts();
         Player.listen(playerPane);
     }
 
@@ -80,5 +88,32 @@ public class GameGridOneController {
 
     public ImageView getPlayerImage() {
         return playerImage;
+    }
+
+    public Label getKeys() {
+        return keysLabel;
+    }
+
+    public ImageView getHeart(int index) {
+        switch (index) {
+            case 1:
+                return heart1;
+            case 2:
+                return heart2;
+            case 3:
+                return heart3;
+            case 4:
+                return heart4;
+            case 5:
+                return heart5;
+            case 6:
+                return heart6;
+            case 7:
+                return heart7;
+            case 8:
+                return heart8;
+            default:
+                return null;
+        }
     }
 }
