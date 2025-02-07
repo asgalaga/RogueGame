@@ -22,6 +22,7 @@ public class Player {
             // playerImage.setLayoutX(spriteX);
             // playerImage.setLayoutY(spriteY);
             // }
+            // System.out.println(Game.maze[x][y]);
             switch (Game.maze[x][y]) {
                 case 1:
                     break;
@@ -103,7 +104,9 @@ public class Player {
             Player.play(newRow, newCol);
 
             if (Player.win) {
+                System.out.println("WINWINWIN");
                 game.next(Game.level.getPlayerPane());
+                Player.win = false;
             }
         } else {
             System.out.println("⛔ Reste dans le tableau !");

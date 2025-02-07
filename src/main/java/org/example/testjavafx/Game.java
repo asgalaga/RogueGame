@@ -133,7 +133,7 @@ public class Game {
             stage.setScene(nextScene);
             stage.show();
 
-            System.out.println("✅ Chargement du niveau 2 réussi !");
+            // System.out.println("✅ Chargement du niveau 2 réussi !");
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("❌ Erreur lors du chargement de GameGridTwo.fxml !");
