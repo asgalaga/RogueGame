@@ -83,6 +83,10 @@ public class Game {
         for (int i = 0; i < 2 && !passages.isEmpty(); i++) {
             putObject(5, passages.remove(0), "/images/potion.png", gameGrid);
         }
+        // Ajouter le cœur d'amélioration
+        if (!passages.isEmpty()) {
+            putObject(7, passages.remove(0), "/images/life.png", gameGrid);
+        }
     }
 
     private void placeImage(String imagePath, int row, int col, GridPane gameGrid) {
@@ -183,17 +187,24 @@ public class Game {
         monsters.clear();
         score = 0;
         level = null;
+        Player.life = 5; // Réinitialiser la vie actuelle
+        Player.maxLife = 5; // Réinitialiser la vie maximale
         System.out.println("✅ Game réinitialisé");
     }
 
     public void showHearts() {
-        for (int i = 1; i < 9; i++) {
-            if (i <= Player.life) {
-                level.getHeart(i).setImage(
-                        new Image(getClass().getResourceAsStream("/images/life.png")));
+        // Affiche jusqu'à maxLife cœurs
+        for (int i = 1; i <= 8; i++) {
+            ImageView heart = level.getHeart(i);
+            if (i <= Player.maxLife) {
+                heart.setVisible(true);
+                if (i <= Player.life) {
+                    heart.setImage(new Image(getClass().getResourceAsStream("/images/life.png")));
+                } else {
+                    heart.setImage(new Image(getClass().getResourceAsStream("/images/noLife.png")));
+                }
             } else {
-                level.getHeart(i).setImage(
-                        new Image(getClass().getResourceAsStream("/images/noLife.png")));
+                heart.setVisible(false); // Cache les cœurs au-delà de maxLife
             }
         }
     }

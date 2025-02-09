@@ -18,6 +18,7 @@ public class Player {
     public static int row, col;
 
     public static int life = 5;
+    public static int maxLife = 5;
     public static boolean key = false;
     public static boolean dead = false;
     public static boolean win = false;
@@ -29,24 +30,28 @@ public class Player {
         if (row >= 0 && row < Game.size && col >= 0 && col < Game.size) {
             switch (Game.maze[row][col]) {
                 case 1:
-                    // Mur, pas de mouvement ou d'action
                     break;
                 case 2:
-                    checkVictory(); // Porte de fin (nécessite la clé)
+                    checkVictory();
                     break;
                 case 3:
-                    unlock(row, col); // Clé
+                    unlock(row, col);
                     break;
                 case 4:
-                    fight(row, col); // Monstre
+                    fight(row, col);
                     break;
                 case 5:
-                    heal(row, col); // Potion
+                    heal(row, col);
                     break;
                 case 6:
-                    back(); // Porte de retour
+                    back();
+                    break;
+                case 7:
+                    System.out.println("💗 Tentative d'amélioration de la vie...");
+                    upgradeLife(row, col);
                     break;
                 default:
+                    System.out.println("⚠️ Valeur non gérée : ");
                     break;
             }
         }
@@ -60,6 +65,16 @@ public class Player {
         System.out.println("Clef !");
         game.remove(row, col);
         game.showKeys();
+    }
+
+    public static void upgradeLife(int row, int col) {
+        if (maxLife < 8) { // On vérifie qu'on n'a pas atteint le maximum absolu
+            maxLife += 1; // On augmente la vie maximale de 1 à chaque fois
+            life = maxLife; // On restaure toute la vie
+            System.out.println("💗 Vie maximale augmentée ! HP = " + life + "/" + maxLife);
+            game.remove(row, col);
+            game.showHearts();
+        }
     }
 
     /**
@@ -115,14 +130,14 @@ public class Player {
     }
 
     /**
-     * Récupère une potion (PV +1 si < 9)
+     * Récupère une potion (PV +1 si < maxLife)
      */
     public static void heal(int row, int col) {
-        if (Player.life < 9) {
+        if (Player.life < Player.maxLife) {
             Player.life += 1;
-            System.out.println("Potion ! HP = " + Player.life);
+            System.out.println("Potion ! HP = " + Player.life + "/" + Player.maxLife);
         } else {
-            System.out.println("Pas soif! HP = " + Player.life);
+            System.out.println("Pas soif! HP = " + Player.life + "/" + Player.maxLife);
         }
         game.remove(row, col);
         game.showHearts();
