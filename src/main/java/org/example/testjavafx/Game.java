@@ -22,9 +22,12 @@ public class Game {
     public static List<Point2D> passages = new ArrayList<>();
     public static int tileSize = 58;
     public static int score = 0;
-    public static Level level;
     private static final List<ImageView> monsters = new ArrayList<>();
     private MonsterTimeline monsterTimeline;
+    public static Level level;
+    public static int playerLevel = 1;
+    public static int xp = 0; // XP actuelle
+    public static int xpToNextLevel = 100; // XP nécessaire pour le prochain niveau
 
     public Game() {
         stopMonsterMovement();
@@ -187,8 +190,11 @@ public class Game {
         monsters.clear();
         score = 0;
         level = null;
-        Player.life = 5; // Réinitialiser la vie actuelle
-        Player.maxLife = 5; // Réinitialiser la vie maximale
+        Player.life = 5;
+        Player.maxLife = 5;
+        Player.playerLevel = 1; // On utilise playerLevel
+        Player.xp = 0;
+        Player.xpToNextLevel = 100;
         System.out.println("✅ Game réinitialisé");
     }
 
@@ -206,6 +212,14 @@ public class Game {
             } else {
                 heart.setVisible(false); // Cache les cœurs au-delà de maxLife
             }
+        }
+    }
+
+    public void showExperience() {
+        if (level != null) {
+            level.getExperience().setText(String.valueOf(Player.xp));
+            level.getExperienceNeed().setText("/" + Player.xpToNextLevel);
+            level.getLevelLabel().setText(String.valueOf(Player.playerLevel)); // Ajout de cette ligne
         }
     }
 

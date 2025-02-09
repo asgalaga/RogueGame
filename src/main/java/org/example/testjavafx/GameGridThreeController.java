@@ -34,6 +34,10 @@ public class GameGridThreeController extends Level {
     private ImageView heart8; // Lien avec GridPane du FXML
     @FXML
     private Label keysLabel; // Lien avec GridPane du FXML
+    @FXML
+    private Label experience;
+    @FXML
+    private Label experienceNeed;
 
     private final int GRID_SIZE = 14; // Nombre de cases (14x14)
 
@@ -82,6 +86,14 @@ public class GameGridThreeController extends Level {
 
         game.showHearts();
         Player.listen(playerPane);
+    }
+
+    public Label getExperience() {
+        return experience;
+    }
+
+    public Label getExperienceNeed() {
+        return experienceNeed;
     }
 
     public GridPane getGameGrid() {

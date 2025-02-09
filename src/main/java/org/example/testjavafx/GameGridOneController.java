@@ -35,6 +35,10 @@ public class GameGridOneController extends Level {
     private ImageView heart8; // Lien avec GridPane du FXML
     @FXML
     private Label keysLabel; // Lien avec GridPane du FXML
+    @FXML
+    private Label experience;
+    @FXML
+    private Label experienceNeed;
 
     public final int TILE_SIZE = 58; // Taille d’une case
     public final int GRID_SIZE = 14; // Nombre de cases (14x14)
@@ -121,6 +125,14 @@ public class GameGridOneController extends Level {
 
     public Label getKeys() {
         return keysLabel;
+    }
+
+    public Label getExperience() {
+        return experience;
+    }
+
+    public Label getExperienceNeed() {
+        return experienceNeed;
     }
 
     public ImageView getHeart(int index) {

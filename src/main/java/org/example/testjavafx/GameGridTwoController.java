@@ -34,6 +34,10 @@ public class GameGridTwoController extends Level {
     @FXML
     private ImageView heart8; // Lien avec GridPane du FXML
     @FXML
+    private Label experience;
+    @FXML
+    private Label experienceNeed;
+    @FXML
     private Label keysLabel; // Lien avec GridPane du FXML
 
     private final int GRID_SIZE = 14; // Nombre de cases (12x12)
@@ -115,6 +119,14 @@ public class GameGridTwoController extends Level {
             System.out.println();
         }
         System.out.println();
+    }
+
+    public Label getExperience() {
+        return experience;
+    }
+
+    public Label getExperienceNeed() {
+        return experienceNeed;
     }
 
     public GridPane getGameGrid() {

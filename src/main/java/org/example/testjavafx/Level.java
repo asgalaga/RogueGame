@@ -36,6 +36,12 @@ public class Level {
     private ImageView heart8; // Lien avec GridPane du FXML
     @FXML
     private Label keysLabel; // Lien avec GridPane du FXML
+    @FXML
+    private Label experience;
+    @FXML
+    private Label experienceNeed;
+    @FXML
+    private Label levelLabel;
 
     public int playerX = 58; // Position initiale en pixels
     public int playerY = 58;
@@ -58,6 +64,30 @@ public class Level {
 
     public Label getKeys() {
         return keysLabel;
+    }
+
+    public Label getExperience() {
+        return experience;
+    }
+
+    public void setExperience(Label experience) {
+        this.experience = experience;
+    }
+
+    public Label getExperienceNeed() {
+        return experienceNeed;
+    }
+
+    public void setExperienceNeed(Label experienceNeed) {
+        this.experienceNeed = experienceNeed;
+    }
+
+    public Label getLevelLabel() {
+        return levelLabel;
+    }
+
+    public void setLevelLabel(Label levelLabel) {
+        this.levelLabel = levelLabel;
     }
 
     public ImageView getHeart(int index) {

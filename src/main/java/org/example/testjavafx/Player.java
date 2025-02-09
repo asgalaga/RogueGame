@@ -22,6 +22,9 @@ public class Player {
     public static boolean key = false;
     public static boolean dead = false;
     public static boolean win = false;
+    public static int playerLevel = 1; // On utilise playerLevel au lieu de level pour éviter la confusion
+    public static int xp = 0;
+    public static int xpToNextLevel = 100;
 
     /**
      * Vérifie l'objet contenu dans la case (row, col) et agit en conséquence
@@ -87,6 +90,8 @@ public class Player {
         System.out.println("Monstre !");
         System.out.println("Ayoye ! HP = " + life);
 
+        gainXP(50);
+
         // Force la mise à jour de la matrice
         Game.maze[row][col] = 0;
 
@@ -141,6 +146,26 @@ public class Player {
         }
         game.remove(row, col);
         game.showHearts();
+    }
+
+    public static void gainXP(int amount) {
+        xp += amount;
+        System.out.println("📈 +" + amount + " XP | " + xp + "/" + xpToNextLevel);
+
+        // Vérifier si on monte de niveau
+        while (xp >= xpToNextLevel) {
+            levelUp();
+        }
+        game.showExperience(); // Mettre à jour l'affichage
+    }
+
+    private static void levelUp() {
+        playerLevel++;
+        xp -= xpToNextLevel;
+        xpToNextLevel = playerLevel * 100;
+        System.out.println("🎉 Niveau suivant ! Niveau " + playerLevel + " atteint !");
+        // Important : mettre à jour l'affichage après avoir modifié le niveau
+        game.showExperience();
     }
 
     /**
