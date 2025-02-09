@@ -3,8 +3,11 @@ package org.example.testjavafx;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -28,6 +31,7 @@ public class Game {
     public static int playerLevel = 1;
     public static int xp = 0; // XP actuelle
     public static int xpToNextLevel = 100; // XP nécessaire pour le prochain niveau
+    private final Map<Point2D, String> equipementMap = new HashMap<>();
 
     public Game() {
         stopMonsterMovement();
@@ -35,6 +39,9 @@ public class Game {
         monsters.clear();
         monsterTimeline = null;
     }
+
+    // Liste statique pour stocker les équipements disponibles (évite les doublons)
+    private static List<String> equipementsDisponibles = new ArrayList<>();
 
     public void fill(int gridSize, GridPane gameGrid, int playerStartRow, int playerStartCol, String... monsterImages) {
         size = gridSize;
@@ -77,15 +84,41 @@ public class Game {
             putObject(3, passages.remove(0), "/images/key.png", gameGrid);
         }
 
+        // 🔥 Vérifier et préparer la liste des équipements disponibles
+        if (equipementsDisponibles.isEmpty()) {
+            equipementsDisponibles.addAll(Arrays.asList(
+                    "/images/equipement/botte2.png",
+                    "/images/equipement/bouclier2.png",
+                    "/images/equipement/casque2.png",
+                    "/images/equipement/chest2.png",
+                    "/images/equipement/epee1.png",
+                    "/images/equipement/gant2.png",
+                    "/images/equipement/masse2.png"));
+        }
+
+        // Mélanger les équipements pour un choix aléatoire
+        Collections.shuffle(equipementsDisponibles);
+
+        // Placement des monstres
         for (int i = 0; i < 8 && !passages.isEmpty(); i++) {
             Point2D pos = passages.remove(0);
             String monsterImage = monsterImages[i % monsterImages.length];
             putObject(4, pos, monsterImage, gameGrid);
         }
 
+        // 🔥 Placer un équipement unique
+        if (!equipementsDisponibles.isEmpty() && !passages.isEmpty()) {
+            String equipementImage = equipementsDisponibles.remove(0); // Sélection unique
+            Point2D pos = passages.remove(0);
+            System.out.println("🛡️ Placement équipement unique : " + equipementImage + " à la position " + pos);
+            putObject(8, pos, equipementImage, gameGrid);
+        }
+
+        // Placement des potions
         for (int i = 0; i < 2 && !passages.isEmpty(); i++) {
             putObject(5, passages.remove(0), "/images/potion.png", gameGrid);
         }
+
         // Ajouter le cœur d'amélioration
         if (!passages.isEmpty()) {
             putObject(7, passages.remove(0), "/images/life.png", gameGrid);
@@ -122,6 +155,12 @@ public class Game {
         imageView.setFitHeight(tileSize);
         gameGrid.add(imageView, col, row);
         maze[row][col] = kind;
+
+        // 🔥 Stocker l’équipement s'il s'agit d'un équipement (kind == 8)
+        if (kind == 8) {
+            equipementMap.put(pos, imagePath);
+            System.out.println("🛡️ Équipement stocké : " + imagePath + " à " + pos);
+        }
 
         if (kind == 4) {
             monsters.add(imageView);
@@ -192,10 +231,30 @@ public class Game {
         level = null;
         Player.life = 5;
         Player.maxLife = 5;
-        Player.playerLevel = 1; // On utilise playerLevel
+        Player.playerLevel = 1;
         Player.xp = 0;
         Player.xpToNextLevel = 100;
-        System.out.println("✅ Game réinitialisé");
+
+        // 🔥 Réinitialiser l’équipement du joueur au niveau de base
+        Player.helmImage = "/images/equipement/casque1.png";
+        Player.chestImage = "/images/equipement/chest1.png";
+        Player.weaponImage = "/images/equipement/masse1.png";
+        Player.botteImage = "/images/equipement/botte1.png";
+        Player.gloveImage = "/images/equipement/gant1.png";
+        Player.shieldImage = "/images/equipement/bouclier1.png";
+
+        // 🔥 Réinitialiser la liste des équipements disponibles
+        equipementsDisponibles.clear();
+        equipementsDisponibles.addAll(Arrays.asList(
+                "/images/equipement/botte2.png",
+                "/images/equipement/bouclier2.png",
+                "/images/equipement/casque2.png",
+                "/images/equipement/chest2.png",
+                "/images/equipement/epee1.png",
+                "/images/equipement/gant2.png",
+                "/images/equipement/masse2.png"));
+
+        System.out.println("✅ Game réinitialisé avec équipement de base !");
     }
 
     public void showHearts() {
@@ -213,6 +272,54 @@ public class Game {
                 heart.setVisible(false); // Cache les cœurs au-delà de maxLife
             }
         }
+    }
+
+    public void equiperObjet(String equipementImage, int row, int col) {
+        if (equipementImage == null || equipementImage.isEmpty()) {
+            System.err.println("❌ Aucun équipement à équiper !");
+            return;
+        }
+
+        System.out.println("🎭 Équipement récupéré : " + equipementImage);
+
+        if (level == null) {
+            System.err.println("❌ ERREUR : `level` n'est pas initialisé !");
+            return;
+        }
+
+        // Charger l'image
+        Image newImage = new Image(getClass().getResourceAsStream(equipementImage));
+
+        // Appliquer l'équipement et sauvegarder l'image équipée
+        if (equipementImage.contains("casque")) {
+            level.getHelm().setImage(newImage);
+            Player.helmImage = equipementImage; // 🔥 Sauvegarde
+        } else if (equipementImage.contains("chest")) {
+            level.getChest().setImage(newImage);
+            Player.chestImage = equipementImage;
+        } else if (equipementImage.contains("epee") || equipementImage.contains("masse")) {
+            level.getWeapon().setImage(newImage);
+            Player.weaponImage = equipementImage;
+        } else if (equipementImage.contains("botte")) {
+            level.getBotte().setImage(newImage);
+            Player.botteImage = equipementImage;
+        } else if (equipementImage.contains("gant")) {
+            level.getGlove().setImage(newImage);
+            Player.gloveImage = equipementImage;
+        } else if (equipementImage.contains("bouclier")) {
+            level.getShield().setImage(newImage);
+            Player.shieldImage = equipementImage;
+        } else {
+            System.out.println("⚠️ Équipement inconnu : " + equipementImage);
+        }
+
+        // Supprimer l’équipement après l'avoir équipé
+        remove(row, col);
+    }
+
+    public String getEquipmentImage(int row, int col) {
+        Point2D pos = new Point2D(row, col);
+        return equipementMap.getOrDefault(pos, null);
     }
 
     public void showExperience() {

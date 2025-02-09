@@ -2,6 +2,7 @@ package org.example.testjavafx;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -39,6 +40,18 @@ public class GameGridOneController extends Level {
     private Label experience;
     @FXML
     private Label experienceNeed;
+    @FXML
+    private ImageView helm;
+    @FXML
+    private ImageView chest;
+    @FXML
+    private ImageView weapon;
+    @FXML
+    private ImageView botte;
+    @FXML
+    private ImageView glove;
+    @FXML
+    private ImageView shield;
 
     public final int TILE_SIZE = 58; // Taille d’une case
     public final int GRID_SIZE = 14; // Nombre de cases (14x14)
@@ -100,9 +113,29 @@ public class GameGridOneController extends Level {
         // mais SANS stocker la position en pixels nulle part ailleurs.
         Player.place(Player.row, Player.col);
 
+        restoreEquippedItems();
+
         // Afficher la vie, la clé, etc.
         game.showHearts();
         Player.listen(playerPane);
+    }
+
+    public void restoreEquippedItems() {
+        System.out.println("🔄 Restauration des équipements du joueur...");
+
+        try {
+            helm.setImage(new Image(getClass().getResourceAsStream(Player.helmImage)));
+            chest.setImage(new Image(getClass().getResourceAsStream(Player.chestImage)));
+            weapon.setImage(new Image(getClass().getResourceAsStream(Player.weaponImage)));
+            botte.setImage(new Image(getClass().getResourceAsStream(Player.botteImage)));
+            glove.setImage(new Image(getClass().getResourceAsStream(Player.gloveImage)));
+            shield.setImage(new Image(getClass().getResourceAsStream(Player.shieldImage)));
+
+            System.out.println("✅ Équipements restaurés !");
+        } catch (Exception e) {
+            System.err.println("❌ ERREUR : Impossible de restaurer les équipements !");
+            e.printStackTrace();
+        }
     }
 
     public void setPlayerStartPosition(int startRow, int startCol) {

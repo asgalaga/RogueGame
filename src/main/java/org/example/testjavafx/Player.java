@@ -25,6 +25,12 @@ public class Player {
     public static int playerLevel = 1; // On utilise playerLevel au lieu de level pour éviter la confusion
     public static int xp = 0;
     public static int xpToNextLevel = 100;
+    public static String helmImage = "/images/equipement/casque1.png";
+    public static String chestImage = "/images/equipement/chest1.png";
+    public static String weaponImage = "/images/equipement/epee1.png";
+    public static String botteImage = "/images/equipement/botte1.png";
+    public static String gloveImage = "/images/equipement/gant1.png";
+    public static String shieldImage = "/images/equipement/bouclier1.png";
 
     /**
      * Vérifie l'objet contenu dans la case (row, col) et agit en conséquence
@@ -53,6 +59,21 @@ public class Player {
                     System.out.println("💗 Tentative d'amélioration de la vie...");
                     upgradeLife(row, col);
                     break;
+                case 8:
+                    System.out.println("🎭 Le joueur a ramassé un équipement !");
+
+                    // 🔥 Récupérer l’équipement à partir de la map
+                    String equipementImage = game.getEquipmentImage(row, col);
+
+                    if (equipementImage != null) {
+                        System.out.println("🔹 Équipement détecté : " + equipementImage);
+                        game.equiperObjet(equipementImage, row, col);
+                    } else {
+                        System.err.println("❌ ERREUR : Aucun équipement trouvé à cette position !");
+                    }
+
+                    break;
+
                 default:
                     System.out.println("⚠️ Valeur non gérée : ");
                     break;

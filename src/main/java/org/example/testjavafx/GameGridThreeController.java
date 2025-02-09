@@ -2,6 +2,7 @@ package org.example.testjavafx;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -38,6 +39,18 @@ public class GameGridThreeController extends Level {
     private Label experience;
     @FXML
     private Label experienceNeed;
+    @FXML
+    private ImageView helm;
+    @FXML
+    private ImageView chest;
+    @FXML
+    private ImageView weapon;
+    @FXML
+    private ImageView botte;
+    @FXML
+    private ImageView glove;
+    @FXML
+    private ImageView shield;
 
     private final int GRID_SIZE = 14; // Nombre de cases (14x14)
 
@@ -84,8 +97,28 @@ public class GameGridThreeController extends Level {
         Player.col = playerStartY;
         Player.place(playerStartX, playerStartY);
 
+        restoreEquippedItems();
+
         game.showHearts();
         Player.listen(playerPane);
+    }
+
+    public void restoreEquippedItems() {
+        System.out.println("🔄 Restauration des équipements du joueur...");
+
+        try {
+            helm.setImage(new Image(getClass().getResourceAsStream(Player.helmImage)));
+            chest.setImage(new Image(getClass().getResourceAsStream(Player.chestImage)));
+            weapon.setImage(new Image(getClass().getResourceAsStream(Player.weaponImage)));
+            botte.setImage(new Image(getClass().getResourceAsStream(Player.botteImage)));
+            glove.setImage(new Image(getClass().getResourceAsStream(Player.gloveImage)));
+            shield.setImage(new Image(getClass().getResourceAsStream(Player.shieldImage)));
+
+            System.out.println("✅ Équipements restaurés !");
+        } catch (Exception e) {
+            System.err.println("❌ ERREUR : Impossible de restaurer les équipements !");
+            e.printStackTrace();
+        }
     }
 
     public Label getExperience() {
