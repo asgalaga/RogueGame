@@ -38,7 +38,7 @@ public class MainController {
 
             // Changer la scène actuelle pour afficher le jeu
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(gameRoot, 950, 920));
+            stage.setScene(new Scene(gameRoot, 1000, 920));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1221,6 +1221,55 @@
                   <Font size="14.0" />
                </font>
             </Label>
+            <GridPane gridLinesVisible="true" layoutX="805.0" layoutY="161.0" prefHeight="230.0" prefWidth="180.0" style="-fx-border-color: #4d4d4d; fx-border-width: 20; -fx-background-color: #4d4d4d;">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="178.0" minHeight="10.0" prefHeight="118.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="164.0" minHeight="10.0" prefHeight="77.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ImageView fx:id="helm" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                     <image>
+                        <Image url="@images/equipement/casque1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="chest" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@images/equipement/chest1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="weapon" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@images/equipement/masse1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="botte" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@images/equipement/botte1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="glove" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                     <image>
+                        <Image url="@images/equipement/gant1.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="shield" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <image>
+                        <Image url="@images/equipement/bouclier1.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </GridPane>
+            <Label layoutX="847.0" layoutY="130.0" prefHeight="27.0" prefWidth="97.0" text="Équipement" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
       </children>
     </AnchorPane>
   </children>
