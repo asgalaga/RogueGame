@@ -39,8 +39,8 @@ public class GameGridThreeController extends Level {
 
     private final int[][] mazeThree = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-            { 1, 0, 0, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
-            { 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 8, 8, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+            { 1, 8, 8, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
             { 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1 },
             { 1, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 },
             { 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1 },
@@ -50,26 +50,35 @@ public class GameGridThreeController extends Level {
             { 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
             { 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
             { 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1 },
-            { 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
-            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1 }
+            { 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 9, 0, 1 },
+            { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6, 1, 1 }
     };
 
     public static Game game;
 
     @FXML
     public void initialize() {
-        next = "/mainPage.fxml";
+        next = "/Victory.fxml";
         game = new Game();
 
         Game.maze = mazeThree;
         Game.level = this;
 
-        game.fill(GRID_SIZE, gameGrid);
+        int playerStartX = 12, playerStartY = 11;
+
+        game.fill(GRID_SIZE, gameGrid, playerStartX, playerStartY,
+                "/images/monstre/monstre6.png", "/images/monstre/monstre9.png", "/images/monstre/monstre10.png",
+                "/images/monstre/monstre3.png"); // 🔴
+        // Monstres
+        // spécifiques
+        // au
+        // niveau 3
+        game.startMonsterMovement();
 
         Player.game = game;
-        Player.x = 11;
-        Player.y = 12;
-        Player.place(11, 12);
+        Player.row = playerStartX;
+        Player.col = playerStartY;
+        Player.place(playerStartX, playerStartY);
 
         game.showHearts();
         Player.listen(playerPane);

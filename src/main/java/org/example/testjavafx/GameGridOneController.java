@@ -36,8 +36,6 @@ public class GameGridOneController extends Level {
     @FXML
     private Label keysLabel; // Lien avec GridPane du FXML
 
-    public int playerX = 58; // Position initiale en pixels
-    public int playerY = 58;
     public final int TILE_SIZE = 58; // Taille d’une case
     public final int GRID_SIZE = 14; // Nombre de cases (14x14)
 
@@ -62,20 +60,51 @@ public class GameGridOneController extends Level {
     @FXML
     public void initialize() {
         next = "/GameGridTwo.fxml";
-
         game = new Game();
 
+        // On associe la matrice et le niveau
         Game.maze = mazeOne;
         Game.level = this;
 
-        game.fill(GRID_SIZE, gameGrid);
+        // Position de départ du joueur en cases (ligne, colonne)
+        int playerStartRow = 1;
+        int playerStartCol = 1;
 
+        // On remplace ici playerStartX, playerStartY par nos row, col.
+        // (Si la signature de fill(...) est (int gridSize, GridPane, int px, int py,
+        // ...)
+        // alors renommez px, py en row, col dans la méthode fill aussi.)
+        game.fill(
+                GRID_SIZE,
+                gameGrid,
+                playerStartRow, // <-- Au lieu de playerStartX
+                playerStartCol, // <-- Au lieu de playerStartY
+                "/images/monstre/monstre1.png",
+                "/images/monstre/monstre2.png",
+                "/images/monstre/monstre12.png");
+
+        // On lance le mouvement des monstres
+        game.startMonsterMovement();
+
+        // On met à jour le "Player"
         Player.game = game;
-        Player.x = 1;
-        Player.y = 1;
+        // On conserve la position en cases
+        Player.row = playerStartRow;
+        Player.col = playerStartCol;
 
+        // On place l'ImageView du joueur en pixels,
+        // mais SANS stocker la position en pixels nulle part ailleurs.
+        Player.place(Player.row, Player.col);
+
+        // Afficher la vie, la clé, etc.
         game.showHearts();
         Player.listen(playerPane);
+    }
+
+    public void setPlayerStartPosition(int startRow, int startCol) {
+        Player.row = startRow;
+        Player.col = startCol;
+        Player.place(startRow, startCol);
     }
 
     public GridPane getGameGrid() {

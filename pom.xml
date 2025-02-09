@@ -14,35 +14,57 @@
         <junit.version>5.10.2</junit.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>17.0.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.kordamp.bootstrapfx</groupId>
-            <artifactId>bootstrapfx-core</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+<dependencies>
+    <!-- JavaFX Controls (Obligatoire pour JavaFX UI) -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>17.0.6</version>
+    </dependency>
+
+    <!-- JavaFX FXML (Obligatoire pour les fichiers FXML) -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-fxml</artifactId>
+        <version>17.0.6</version>
+    </dependency>
+
+    <!-- JavaFX Base (Obligatoire pour Timeline et KeyFrame) -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-base</artifactId>
+        <version>17.0.6</version>
+    </dependency>
+
+    <!-- JavaFX Graphics (Obligatoire pour GridPane, ImageView, etc.) -->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-graphics</artifactId>
+        <version>17.0.6</version>
+    </dependency>
+
+    <!-- BootstrapFX (Pour le style, facultatif) -->
+    <dependency>
+        <groupId>org.kordamp.bootstrapfx</groupId>
+        <artifactId>bootstrapfx-core</artifactId>
+        <version>0.4.0</version>
+    </dependency>
+
+    <!-- JUnit (Pour les tests unitaires) -->
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-engine</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+
 
     <build>
         <plugins>

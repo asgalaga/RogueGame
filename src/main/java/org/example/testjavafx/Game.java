@@ -18,91 +18,120 @@ import javafx.stage.Stage;
 @SuppressWarnings("exports")
 public class Game {
     public static int[][] maze;
-    public static int size = 14; // Nombre de cases (14x14)
+    public static int size = 14;
     public static List<Point2D> passages = new ArrayList<>();
-    public static int tileSize = 58; // Taille d’une case
-    public static int score = 0; // Taille d’une case
+    public static int tileSize = 58;
+    public static int score = 0;
     public static Level level;
+    private static final List<ImageView> monsters = new ArrayList<>();
+    private MonsterTimeline monsterTimeline;
 
     public Game() {
-
+        stopMonsterMovement();
+        passages = new ArrayList<>();
+        monsters.clear();
+        monsterTimeline = null;
     }
 
-    public void start() {
-        // FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainPage.fxml"));
-        // Parent root = loader.load();
-        //
-        // Scene scene = new Scene(root, 890, 950);
-        // primaryStage.setScene(scene);
-        // primaryStage.show();
-    }
-
-    public void fill(int gridSize, GridPane gameGrid) {
+    public void fill(int gridSize, GridPane gameGrid, int playerStartRow, int playerStartCol, String... monsterImages) {
         size = gridSize;
+        passages.clear();
+        monsters.clear();
 
+        System.out.println("🔍 Initialisation du niveau :");
+
+        // Placer le sol et les murs
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 String imagePath = "";
-
                 switch (maze[row][col]) {
-                    case 0 -> Game.passages.add(new Point2D(row, col));
-                    case 1 -> imagePath = "/images/wall.png"; // Mur
-                    case 2 -> imagePath = "/images/door.png"; // Porte
-                    default -> imagePath = "/images/floor.png"; // Sol
+                    case 0 -> {
+                        passages.add(new Point2D(row, col));
+                        imagePath = "/images/floor.png";
+                    }
+                    case 1 -> imagePath = "/images/wall.png";
+                    case 2 -> imagePath = "/images/door.png";
+                    case 9 -> imagePath = "/images/floor.png";
+                    default -> imagePath = "/images/floor.png";
                 }
-
-                URL imgURL = getClass().getResource(imagePath);
-                if (imgURL == null) {
-                    // System.err.println("❌ Image introuvable : " + imagePath);
-                    continue;
-                }
-
-                ImageView imageView = new ImageView(new Image(imgURL.toExternalForm()));
-                imageView.setFitWidth(tileSize);
-                imageView.setFitHeight(tileSize);
-                gameGrid.add(imageView, col, row);
+                placeImage(imagePath, row, col, gameGrid);
             }
+        }
+
+        final int pRow = playerStartRow;
+        final int pCol = playerStartCol;
+        passages.removeIf(p -> p.getX() == pRow && p.getY() == pCol);
+
+        if (passages.isEmpty()) {
+            System.err.println("❌ Aucune case disponible pour les objets !");
+            return;
         }
 
         Collections.shuffle(passages);
 
-        // clef
-        put(3, "/images/key.png");
-
-        // monstres
-        for (int i = 0; i < 8; i++) {
-            put(4, "/images/monstre1.png");
+        // Placer la clé, les monstres et les potions
+        if (!passages.isEmpty()) {
+            putObject(3, passages.remove(0), "/images/key.png", gameGrid);
         }
 
-        // potions
-        for (int i = 0; i < 2; i++) {
-            put(5, "/images/life.png");
+        for (int i = 0; i < 8 && !passages.isEmpty(); i++) {
+            Point2D pos = passages.remove(0);
+            String monsterImage = monsterImages[i % monsterImages.length];
+            putObject(4, pos, monsterImage, gameGrid);
+        }
+
+        for (int i = 0; i < 2 && !passages.isEmpty(); i++) {
+            putObject(5, passages.remove(0), "/images/potion.png", gameGrid);
         }
     }
 
-    public void put(int kind, String image) {
-        Point2D tile = passages.get(0);
-        passages.remove(0);
-
-        String imagePath = image;
+    private void placeImage(String imagePath, int row, int col, GridPane gameGrid) {
         URL imgURL = getClass().getResource(imagePath);
+        if (imgURL != null) {
+            ImageView imageView = new ImageView(new Image(imgURL.toExternalForm()));
+            imageView.setFitWidth(tileSize);
+            imageView.setFitHeight(tileSize);
+            gameGrid.add(imageView, col, row);
+        }
+    }
+
+    private void putObject(int kind, Point2D pos, String imagePath, GridPane gameGrid) {
+        int row = (int) pos.getX();
+        int col = (int) pos.getY();
+
+        if (maze[row][col] != 0) {
+            System.out.println("⚠️ Case non vide en (" + row + "," + col + ") : " + maze[row][col]);
+            return;
+        }
+
+        URL imgURL = getClass().getResource(imagePath);
+        if (imgURL == null) {
+            System.err.println("❌ Image non trouvée : " + imagePath);
+            return;
+        }
 
         ImageView imageView = new ImageView(new Image(imgURL.toExternalForm()));
         imageView.setFitWidth(tileSize);
         imageView.setFitHeight(tileSize);
+        gameGrid.add(imageView, col, row);
+        maze[row][col] = kind;
 
-        int x = (int) tile.getX();
-        int y = (int) tile.getY();
-
-        level.getGameGrid().add(imageView, y, x);
-
-        maze[(int) tile.getX()][(int) tile.getY()] = kind;
+        if (kind == 4) {
+            monsters.add(imageView);
+            System.out.println("✅ Monstre ajouté en (" + row + "," + col + ")");
+        }
     }
 
-    public void remove(int x, int y) {
+    public void remove(int row, int col) {
+        System.out.println("Removing object at (" + row + "," + col + "), current value: " + maze[row][col]);
+
+        // D'abord mettre à jour la matrice
+        maze[row][col] = 0;
+
         GridPane grid = level.getGameGrid();
         List<javafx.scene.Node> nodesToRemove = new ArrayList<>();
 
+        // Trouver tous les éléments à cette position
         for (javafx.scene.Node node : grid.getChildren()) {
             Integer columnIndex = GridPane.getColumnIndex(node);
             Integer rowIndex = GridPane.getRowIndex(node);
@@ -110,56 +139,94 @@ public class Game {
             columnIndex = (columnIndex == null) ? 0 : columnIndex;
             rowIndex = (rowIndex == null) ? 0 : rowIndex;
 
-            if (columnIndex == y && rowIndex == x) {
+            if (columnIndex == col && rowIndex == row) {
                 nodesToRemove.add(node);
             }
         }
 
+        // S'il y a plus d'un élément (sol + objet)
         if (nodesToRemove.size() > 1) {
-            grid.getChildren().remove(nodesToRemove.get(nodesToRemove.size() - 1));
-            maze[x][y] = 0; // Reset maze position to empty
-            passages.add(new Point2D(x, y));
-            level.getGameGrid().requestLayout();
+            // Retirer l'objet (dernier élément ajouté)
+            javafx.scene.Node nodeToRemove = nodesToRemove.get(nodesToRemove.size() - 1);
+            grid.getChildren().remove(nodeToRemove);
+
+            // Si c'est un monstre, le retirer de la liste des monstres
+            if (nodeToRemove instanceof ImageView && monsters.contains(nodeToRemove)) {
+                monsters.remove(nodeToRemove);
+            }
+
+            passages.add(new Point2D(row, col));
+            grid.requestLayout();
+        }
+
+        System.out.println("After removal, maze value at (" + row + "," + col + "): " + maze[row][col]);
+        printMaze();
+    }
+
+    public void startMonsterMovement() {
+        stopMonsterMovement();
+        monsterTimeline = new MonsterTimeline(monsters, maze, size);
+        monsterTimeline.startMonsterMovement();
+    }
+
+    public void stopMonsterMovement() {
+        if (monsterTimeline != null) {
+            monsterTimeline.stopMonsterMovement();
+            monsterTimeline = null;
         }
     }
 
-    public void next(Pane playerPane) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(level.next));
-            Pane nextRoot = loader.load();
-
-            Stage stage = (Stage) playerPane.getScene().getWindow();
-            Scene nextScene = new Scene(nextRoot);
-            stage.setScene(nextScene);
-            stage.show();
-
-            // System.out.println("✅ Chargement du niveau 2 réussi !");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("❌ Erreur lors du chargement de GameGridTwo.fxml !");
-        }
+    public static void resetGame() {
+        maze = null;
+        size = 14;
+        passages.clear();
+        monsters.clear();
+        score = 0;
+        level = null;
+        System.out.println("✅ Game réinitialisé");
     }
 
     public void showHearts() {
-        for (int i = 1; i < 8; i++) {
+        for (int i = 1; i < 9; i++) {
             if (i <= Player.life) {
-                level.getHeart(i)
-                        .setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("/images/life.png")));
-
+                level.getHeart(i).setImage(
+                        new Image(getClass().getResourceAsStream("/images/life.png")));
             } else {
-                level.getHeart(i)
-                        .setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("/images/noLife.png")));
-
+                level.getHeart(i).setImage(
+                        new Image(getClass().getResourceAsStream("/images/noLife.png")));
             }
         }
     }
 
     public void showKeys() {
-        if (Player.key)
-            level.getKeys().setText("1");
-        else
-            level.getKeys().setText("0");
-        // .setImage(new
-        // javafx.scene.image.Image(getClass().getResourceAsStream("/images/life.png")));
+        level.getKeys().setText(Player.key ? "1" : "0");
+    }
+
+    public void next(Pane playerPane) {
+        stopMonsterMovement();
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(level.next));
+            Pane nextRoot = loader.load();
+            Stage stage = (Stage) playerPane.getScene().getWindow();
+            Scene nextScene = new Scene(nextRoot);
+            stage.setScene(nextScene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Erreur lors du chargement du niveau suivant !");
+        }
+    }
+
+    public static void printMaze() {
+        System.out.println("État actuel de la matrice maze :");
+        for (int r = 0; r < size; r++) {
+            StringBuilder line = new StringBuilder();
+            for (int c = 0; c < size; c++) {
+                line.append(maze[r][c]).append(" ");
+            }
+            System.out.println(line.toString());
+        }
+        System.out.println("------------------------------");
     }
 }

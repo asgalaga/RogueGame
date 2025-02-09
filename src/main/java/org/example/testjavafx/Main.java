@@ -18,10 +18,10 @@ public class Main extends Application {
         primaryStage.setTitle("Cursed Run");
 
         // Charger le fichier FXML
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameGridOne.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/mainPage.fxml"));
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, 890, 950);
+        Scene scene = new Scene(root, 800, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

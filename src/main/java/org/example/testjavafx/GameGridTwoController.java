@@ -40,7 +40,7 @@ public class GameGridTwoController extends Level {
 
     private final int[][] mazeTwo = {
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1 },
-            { 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
+            { 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 9, 0, 0, 1 },
             { 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
             { 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1 },
             { 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -49,7 +49,7 @@ public class GameGridTwoController extends Level {
             { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
             { 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
-            { 2, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1 },
+            { 6, 9, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1 },
             { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
             { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
             { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
@@ -58,21 +58,63 @@ public class GameGridTwoController extends Level {
 
     @FXML
     public void initialize() {
+        // Définir le prochain niveau
         next = "/GameGridThree.fxml";
+
+        // S'assurer que tout est propre avant de commencer
+        if (game != null && Game.level != null) {
+            game = null;
+            Game.level = null;
+        }
+
+        // Créer une nouvelle instance de Game
         game = new Game();
 
-        Game.maze = mazeTwo;
+        // Initialiser le niveau
+        Game.maze = mazeTwo.clone(); // Faire une copie de la matrice
         Game.level = this;
 
-        game.fill(GRID_SIZE, gameGrid);
+        // Position initiale du joueur
+        int playerStartX = 10, playerStartY = 1;
 
+        // Remplir le niveau
+        game.fill(GRID_SIZE, gameGrid, playerStartX, playerStartY,
+                "/images/monstre/monstre4.png",
+                "/images/monstre/monstre5.png",
+                "/images/monstre/monstre8.png");
+
+        System.out.println("✅ Niveau 2 chargé, état initial :");
+        afficherMaze();
+
+        // Démarrer le mouvement des monstres
+        game.startMonsterMovement();
+
+        // Configurer le joueur
         Player.game = game;
-        Player.x = 1;
-        Player.y = 10;
-        Player.place(1, 10);
+        Player.row = playerStartX;
+        Player.col = playerStartY;
+        Player.place(playerStartX, playerStartY);
 
+        // Mettre à jour l'interface
         game.showHearts();
         Player.listen(playerPane);
+    }
+
+    public void setPlayerStartPosition(int startRow, int startCol) {
+        Player.row = startRow;
+        Player.col = startCol;
+        Player.place(startRow, startCol);
+    }
+
+    private void afficherMaze() {
+        System.out.println("État de la matrice :");
+        for (int i = 0; i < mazeTwo.length; i++) {
+            for (int j = 0; j < mazeTwo[i].length; j++) {
+                System.out.print(mazeTwo[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 
     public GridPane getGameGrid() {
